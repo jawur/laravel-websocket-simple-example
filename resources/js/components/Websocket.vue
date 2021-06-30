@@ -6,10 +6,8 @@
 
 <script>
 export default {
-  name: "Websocket"
+  mounted() {
+    console.log('Component mounted.')
+  }
 }
 </script>
-
-<style scoped>
-
-</style>
