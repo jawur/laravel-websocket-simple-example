@@ -7,6 +7,11 @@
 <script>
 export default {
   mounted() {
+    window.Echo.channel('message')
+        .listen('WebsocketEvent', (e) => {
+          console.log(e)
+        })
+
     console.log('Component mounted.')
   }
 }
