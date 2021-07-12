@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - ${HTTP_PORT:-8080}:80
+    volumes:
+      - ./public:/usr/share/nginx/html:cached
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - .:/var/www:cached
+  cron:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    entrypoint: ["docker-cron-entrypoint"]
+    volumes:
+      - .:/var/www:cached
