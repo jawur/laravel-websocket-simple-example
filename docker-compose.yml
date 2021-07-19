@@ -8,6 +8,14 @@ services:
       - ${HTTP_PORT:-8080}:80
     volumes:
       - ./public:/usr/share/nginx/html:cached
+  websocket:
+    build:
+      context: .
+      dockerfile: docker/websockets/Dockerfile
+    ports:
+      - 6001:6001
+    volumes:
+      - .:/var/www:cached
   php:
     build:
       context: .

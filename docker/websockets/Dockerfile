@@ -1,8 +1,7 @@
-FROM php:%%PHP_VERSION%%-fpm
+FROM php:7.4-fpm
 
 RUN apt-get update \
     && apt-get install -y \
-    cron \
     iproute2 \
     libzip-dev \
     libicu-dev \
@@ -12,7 +11,7 @@ RUN apt-get update \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     && docker-php-ext-configure zip \
-    && docker-php-ext-configure gd %%GD_BUILD_OPTIONS%% \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
     pdo \
     gd \
@@ -23,7 +22,6 @@ RUN apt-get update \
 
 COPY ./docker/php/resources/conf.d/ /usr/local/etc/php/conf.d/
 COPY ./docker/php/resources/local-bin/ /usr/local/bin/
-COPY ./docker/php/resources/scripts/crontab /crontab
 
 WORKDIR /var/www
 
@@ -46,6 +44,6 @@ ONBUILD USER root
 ONBUILD RUN chmod -R 777 /var/www/storage/ 2> /dev/null \
     && chmod -R 777 /var/www/bootstrap/cache/  2> /dev/null
 
-# Setup cron pointing to artisan:schedule
-# We'll only register the cronfile if artisan is present (to allow for auto-registering cron with laravel)
-ONBUILD RUN if [ -f "/var/www/artisan" ]; then /usr/bin/crontab /crontab; fi
+EXPOSE 6001
+
+CMD ["php", "artisan", "websockets:serve"]
