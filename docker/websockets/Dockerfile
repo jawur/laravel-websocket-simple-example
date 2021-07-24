@@ -2,22 +2,31 @@ FROM php:7.4-fpm
 
 RUN apt-get update \
     && apt-get install -y \
+    #a collection of userspace utilities for controlling and monitoring various aspects of networking in the Linux kernel
     iproute2 \
+    #a C library for reading, creating, and modifying zip archives
     libzip-dev \
+    #Development files for International Components for Unicode
     libicu-dev \
+    # a computer program that retrieves content from web servers
     wget \
+    #a compression and file packaging utility for Unix
     zip \
-    git \
+    #a library for handling JPEG files
     libjpeg62-turbo-dev \
+    #GD requirenment
     libfreetype6-dev \
     && docker-php-ext-configure zip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
+    #a driver that implements the PHP Data Objects (PDO)
     pdo \
+    #is an open-source library that allows users to create and manipulate images easily
     gd \
     zip \
     bcmath \
     pdo_mysql \
+    #a wrapper for the ICU library
     intl
 
 COPY ./docker/php/resources/conf.d/ /usr/local/etc/php/conf.d/

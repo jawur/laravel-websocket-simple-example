@@ -1,8 +1,3 @@
-#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "generate.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
 FROM nginx:1.17-alpine
 
 COPY ./docker/nginx/resources/site.conf /etc/nginx/conf.d/default.conf
