@@ -29,3 +29,15 @@ services:
     entrypoint: ["docker-cron-entrypoint"]
     volumes:
       - .:/var/www:cached
+  mysql:
+    image: library/mysql
+    restart: always
+    command: --init-file /data/application/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 3307:3306
+      - 4306:4306
+    volumes:
+      - ./docker/data:/var/lib/mysql
+      - ./create_db.sql:/data/application/init.sql
