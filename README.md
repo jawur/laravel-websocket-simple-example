@@ -24,19 +24,23 @@
    ```sh
    docker compose build
    ```
-4. Start docker containers
+4. Open a new terminal window and install app dependencies
    ```sh
-   docker compose up
+   docker compose run php composer install
    ```
-5. Open a new terminal window and generate the app key
+5. Wait for the previous command to complete and generate the app key
    ```sh
    docker compose run php php artisan key:generate
    ```
-
+6. Start docker containers
+   ```sh
+   docker compose up
+   ```
+   
 ## Usage
 
 1. Navigate to http://127.0.0.1:8080/messages and keep it open, don't refresh
-2. Send a message using the below command
+2. Open a new terminal window and send a message using the below command
    ```js
    docker compose run php php artisan broadcast:message 'Your message here'
    ```
