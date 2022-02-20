@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\WebsocketEvent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', fn() => redirect('messages'));
+Route::get('messages', fn() => view('welcome'));
+
+Route::get('messages/{message}', function($message) {
+    broadcast(new WebsocketEvent($message));
+
+    return 'Message sent';
 });

@@ -1,3 +1,0 @@
-#!/bin/bash
-
-source "${BASH_SOURCE%/*}/host-docker-internal.sh"

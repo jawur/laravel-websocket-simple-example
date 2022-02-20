@@ -2,13 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Message;
+use App\Events\WebsocketEvent;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Validator;
 
 class BroadcastMessageCommand extends Command
 {
-    protected $signature = 'broadcast:message {body}';
+    protected $signature = 'broadcast:message {message}';
 
     protected $description = 'Command description';
 
@@ -17,23 +16,9 @@ class BroadcastMessageCommand extends Command
         parent::__construct();
     }
 
-    public function handle()
+    public function handle(): void
     {
-        $validator = Validator::make([
-            'body' => $this->argument('body'),
-        ], [
-            'body' => ['required', 'string'],
-        ]);
-
-        if ($validator->fails()) {
-            $this->error((string)$validator->getMessageBag());
-
-            return;
-        }
-
-        Message::query()->create([
-            'body' => $this->argument('body'),
-        ]);
+        broadcast(new WebsocketEvent($this->argument('message')));
 
         $this->line('Message sent');
     }

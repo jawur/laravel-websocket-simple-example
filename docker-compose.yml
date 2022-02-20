@@ -5,15 +5,16 @@ services:
       context: .
       dockerfile: docker/nginx/Dockerfile
     ports:
-      - ${HTTP_PORT:-8080}:80
+      - 8080:80
     volumes:
       - ./public:/usr/share/nginx/html:cached
   websocket:
     build:
       context: .
-      dockerfile: docker/websockets/Dockerfile
+      dockerfile: docker/php/Dockerfile
     ports:
       - 6001:6001
+    command: sh -c "php artisan websockets:serve"
     volumes:
       - .:/var/www:cached
   php:
@@ -22,22 +23,3 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - .:/var/www:cached
-  cron:
-    build:
-      context: .
-      dockerfile: docker/php/Dockerfile
-    entrypoint: ["docker-cron-entrypoint"]
-    volumes:
-      - .:/var/www:cached
-  mysql:
-    image: library/mysql
-    restart: always
-    command: --init-file /data/application/init.sql
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-    ports:
-      - 3307:3306
-      - 4306:4306
-    volumes:
-      - ./docker/data:/var/lib/mysql
-      - ./create_db.sql:/data/application/init.sql

@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Message;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -14,16 +13,16 @@ class WebsocketEvent implements ShouldBroadcast, ShouldQueue
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private Message $message;
+    private string $message;
 
-    public function __construct(Message $message)
+    public function __construct(string $message)
     {
         $this->message = $message;
     }
 
     public function broadcastWith(): array
     {
-        return ['message' => $this->message->body];
+        return ['message' => $this->message];
     }
 
     public function broadcastOn(): Channel
